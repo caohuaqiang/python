@@ -1,18 +1,34 @@
 # -*- coding:utf-8 -*-
 from flask import Flask, render_template, request, redirect, escape
-import requests
-import json
-from pprint import pprint
 from vsearch import search4letters
+import mysql.connector
 
 
 app = Flask(__name__)
 
 
 def log_request(req: 'request', res: str) -> None:
-    """写日志"""
-    with open('vsearch.log', mode='a') as log:
-        print(req.form, req.remote_addr, req.user_agent, res, file=log, sep='|')
+    """写日志(db)"""
+    # with open('vsearch.log', mode='a') as log:
+    #     print(req.form, req.remote_addr, req.user_agent, res, file=log, sep='|')
+    dbconfig = {'host': '127.0.0.1',
+                'user': 'vsearch',
+                'password': '123456',
+                'database': 'vsearchlogDB',}
+    conn = mysql.connector.connect(**dbconfig)
+    cursor = conn.cursor()
+    _SQL = """insert into log
+              (phrase, letters, ip, browser_string, results)
+              values 
+              (%s, %s, %s, %s, %s)"""
+    cursor.execute(_SQL, params=(req.form['phrase'],
+                                 req.form['letters'],
+                                 req.remote_addr,
+                                 req.user_agent.browser,
+                                 res,))
+    conn.commit()
+    cursor.close()
+    conn.close()
 
 
 @app.route('/search4', methods=['POST'])
@@ -21,7 +37,7 @@ def do_search() -> 'html':
     letters = request.form['letters']
     title = 'Here are your results:'
     results = str(search4letters(phrase, letters))
-    log_request(req=request, res=results)
+    log_request(req=request, res=results)           # 写日志（db）
     return render_template('results.html',
                            the_title=title,
                            the_phrase=phrase,
