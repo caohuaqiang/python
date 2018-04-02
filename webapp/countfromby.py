@@ -10,7 +10,4 @@ class CountFromBy:
         return str(self.val)
 
 
-if __name__ == '__main__':
-    i = CountFromBy(i=15)
-    print(i)
 
