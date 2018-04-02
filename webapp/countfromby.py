@@ -1,15 +1,16 @@
 class CountFromBy:
-    def __init__(self):
-        self.val = 100
-        self.incr = 20
+    def __init__(self, v: int=0, i: int=1) -> None:
+        self.val = v
+        self.incr = i
 
     def increase(self) -> None:
         self.val += self.incr
-        return self.val
 
-    def woshitiancai(self):
-        print('chq is cool~~~~~')
+    def __repr__(self) -> str:
+        return str(self.val)
+
 
 if __name__ == '__main__':
-    A = CountFromBy()
-    print(A.increase())
+    i = CountFromBy(i=15)
+    print(i)
+
