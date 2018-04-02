@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h2>{{ the_title }}</h2>
+
+<p>登录接口传参如下:</p>
+<table>
+<tr><td>手机号:</td><td>{{ the_phone }}</td></tr>
+<tr><td>登录密码:</td><td>{{ the_pwd }}</td></tr>
+</table>
+
+<p>输入手机号：{{ the_phone }}，登录密码:{{ the_pwd }}。返回json如下：</p>
+<h3 class="result">{{ the_results }}</h3>
+<script>
+    var the_results=document.querySelector('.result')
+    console.log(JSON.parse(the_results.innerHTML))
+</script>
+
+{% endblock %}
+

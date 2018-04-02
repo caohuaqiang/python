@@ -1,0 +1,17 @@
+{% extends './base.html' %}
+
+{% block body %}
+
+<h2>{{ biaoti }}</h2>
+
+<form method='POST' action='/login/wap'>
+<table>
+<p>请输入登录手机号和密码:</p>
+<tr><td>手机号:</td><td><input name='name' type='TEXT' width='60'></td></tr>
+<tr><td>密码:</td><td><input name='pwd' type='TEXT' value='a1234567'></td></tr>
+</table>
+<p>输入好了吗 那你还看个鸡巴啊 点下面的登录按钮啊我操</p>
+<p><input value='登他妈的！' type='SUBMIT'></p>
+</form>
+
+{% endblock %}
