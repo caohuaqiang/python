@@ -7,6 +7,8 @@ class CountFromBy:
         self.val += self.incr
         return self.val
 
+    def fuck(self):
+        print('heheda')
 
 if __name__ == '__main__':
     A = CountFromBy()
