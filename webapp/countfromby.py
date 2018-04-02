@@ -6,7 +6,9 @@ class CountFromBy:
     def increase(self) -> None:
         self.val += self.incr
         return self.val
-
+    
+    caonimabihehehehehehehehe
+    
     def fuck(self):
         print('heheda')
 
