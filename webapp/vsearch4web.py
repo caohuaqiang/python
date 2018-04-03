@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-from flask import Flask, render_template, request, redirect, escape
+from flask import Flask, render_template, request, session
 from vsearch import search4letters
 from DBcm import UseDatabase
 
@@ -66,7 +66,7 @@ def entry_page() -> 'html':
 
 @app.route('/viewlog')
 def view_the_log() -> 'html':
-    """读日志(做成表格，返回html)"""
+    """读db日志数据(返回html，内含表格)"""
     with UseDatabase(app.config['dbconfig']) as cursor:
         _SQL = """select phrase, letters, ip, browser_string, results from log"""
         cursor.execute(_SQL)
