@@ -1,34 +1,47 @@
 # -*- coding:utf-8 -*-
 from flask import Flask, render_template, request, redirect, escape
 from vsearch import search4letters
-import mysql.connector
+from DBcm import UseDatabase
 
 
 app = Flask(__name__)
 
+app.config['dbconfig'] = {'host': '127.0.0.1',
+                          'user': 'vsearch',
+                          'password': '123456',
+                          'database': 'vsearchlogDB',}
+
 
 def log_request(req: 'request', res: str) -> None:
-    """写日志(db)"""
-    # with open('vsearch.log', mode='a') as log:
-    #     print(req.form, req.remote_addr, req.user_agent, res, file=log, sep='|')
-    dbconfig = {'host': '127.0.0.1',
-                'user': 'vsearch',
-                'password': '123456',
-                'database': 'vsearchlogDB',}
-    conn = mysql.connector.connect(**dbconfig)
-    cursor = conn.cursor()
-    _SQL = """insert into log
+    """将web请求的数据和返回结果写日志(db)"""
+    # dbconfig = {'host': '127.0.0.1',
+    #             'user': 'vsearch',
+    #             'password': '123456',
+    #             'database': 'vsearchlogDB',}
+    # conn = mysql.connector.connect(**dbconfig)
+    # cursor = conn.cursor()
+    # _SQL = """insert into log
+    #           (phrase, letters, ip, browser_string, results)
+    #           values
+    #           (%s, %s, %s, %s, %s)"""
+    # cursor.execute(_SQL, params=(req.form['phrase'],
+    #                              req.form['letters'],
+    #                              req.remote_addr,
+    #                              req.user_agent.browser,
+    #                              res,))
+    # conn.commit()
+    # cursor.close()
+    # conn.close()
+    with UseDatabase(config=app.config['dbconfig']) as cursor:
+        _SQL = """insert into log
               (phrase, letters, ip, browser_string, results)
-              values 
+              values
               (%s, %s, %s, %s, %s)"""
-    cursor.execute(_SQL, params=(req.form['phrase'],
-                                 req.form['letters'],
-                                 req.remote_addr,
-                                 req.user_agent.browser,
-                                 res,))
-    conn.commit()
-    cursor.close()
-    conn.close()
+        cursor.execute(_SQL, params=(req.form['phrase'],
+                                     req.form['letters'],
+                                     req.remote_addr,
+                                     req.user_agent.browser,
+                                     res,))
 
 
 @app.route('/search4', methods=['POST'])
