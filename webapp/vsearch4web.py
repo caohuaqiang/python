@@ -67,13 +67,11 @@ def entry_page() -> 'html':
 @app.route('/viewlog')
 def view_the_log() -> 'html':
     """读日志(做成表格，返回html)"""
-    with open('vsearch.log', mode='r') as log:
-        contents = []
-        for line in log:
-            contents.append([])
-            for item in line.split('|'):
-                contents[-1].append(escape(item))
-    titles = ('Form Data', 'Remote_addr', 'User_agent', 'Results')  #创建描述性标题的元组
+    with UseDatabase(app.config['dbconfig']) as cursor:
+        _SQL = """select phrase, letters, ip, browser_string, results from log"""
+        cursor.execute(_SQL)
+        contents = cursor.fetchall()        # 返回一个元组列表
+    titles = ('Phrase', 'Letters', 'Remote_addr', 'User_agent', 'Results')  # 创建描述性标题的元组
     return render_template('viewlog.html',
                            the_title='View Log',
                            the_row_titles=titles,
