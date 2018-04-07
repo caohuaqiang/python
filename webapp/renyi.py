@@ -5,5 +5,19 @@ def myfunc2(**kwargs):
         print()
 
 
+def myfunc3(*args, **kwargs):
+    if args:
+        for a in args:
+            print(a, end=' ')
+        print()
+    if kwargs:
+        for k, v in kwargs.items():
+            print(k, v, sep='->', end=' ')
+        print()
+
+
 if __name__ == '__main__':
-    myfunc2(a=1, b=2)
+    # myfunc3(1, 2, 3)
+    # myfunc3(a=10, b=20, c=30)
+    myfunc3(1, 2, 3, a=10, b=20, c=30)
+
