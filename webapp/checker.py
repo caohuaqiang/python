@@ -1,9 +1,10 @@
 from flask import session
-
+from functools import wraps
 
 def check_logged_in(func):
-    def wapper():
+    @wraps(func)
+    def wapper(*args, **kwargs):
         if 'logged_in' in session:
-            return func()
+            return func(*args, **kwargs)
         return 'You are NOT logged in.'
     return wapper

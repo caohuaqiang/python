@@ -14,10 +14,21 @@ def myfunc3(*args, **kwargs):
         for k, v in kwargs.items():
             print(k, v, sep='->', end=' ')
         print()
+        print(kwargs)
+
+
+def outer():
+    def inner():
+        print('This is inner.')
+
+    print('This is outer, invoking inner.')
+    return inner
+
 
 
 if __name__ == '__main__':
     # myfunc3(1, 2, 3)
     # myfunc3(a=10, b=20, c=30)
     myfunc3(1, 2, 3, a=10, b=20, c=30)
-
+    # i = outer()
+    # i()
